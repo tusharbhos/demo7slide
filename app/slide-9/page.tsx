@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Navigation from "../components/Navigation";
 
 export default function Slide9Page() {
   const router = useRouter();
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -17,8 +18,56 @@ export default function Slide9Page() {
     slot1: "",
     slot2: "",
   });
+  
+  const [showReloadPopup, setShowReloadPopup] = useState(false);
 
   useEffect(() => {
+    // Reload detection logic
+    const handleBeforeUnload = () => {
+      localStorage.setItem("wasReloaded", "true");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    const wasReloaded = localStorage.getItem("wasReloaded");
+    if (wasReloaded === "true") {
+      setShowReloadPopup(true);
+      localStorage.removeItem("wasReloaded");
+    }
+
+    // Video auto-play logic
+    const playVideoWithSound = () => {
+      if (!videoRef.current) return;
+
+      videoRef.current.muted = false;
+      videoRef.current.volume = 1.0;
+      videoRef.current.playsInline = true;
+
+      const playPromise = videoRef.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Auto-play with sound failed:", error);
+          videoRef.current!.muted = true;
+          videoRef.current!.play();
+        });
+      }
+    };
+
+    if (videoRef.current) {
+      videoRef.current.onloadeddata = playVideoWithSound;
+    }
+
+    setTimeout(playVideoWithSound, 500);
+
+    const handlePageClick = () => {
+      if (videoRef.current && videoRef.current.muted) {
+        videoRef.current.muted = false;
+      }
+    };
+
+    document.addEventListener("click", handlePageClick);
+
     // Set minimum date to today
     const now = new Date();
     const minDateTime = now.toISOString().slice(0, 16);
@@ -37,7 +86,25 @@ export default function Slide9Page() {
     dateInputs.forEach((input: any) => {
       input.min = minDate;
     });
+
+    return () => {
+      document.removeEventListener("click", handlePageClick);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
+
+  const handleStartPresentation = () => {
+    setShowReloadPopup(false);
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.volume = 1.0;
+      videoRef.current.play().catch((error) => {
+        console.log("Play after start button failed:", error);
+        videoRef.current!.muted = true;
+        videoRef.current!.play();
+      });
+    }
+  };
 
   const goToPreviousSlide = () => router.push("/slide-8");
   const handleSlideSelect = (slideNumber: number) => {
@@ -161,6 +228,48 @@ export default function Slide9Page() {
 
   return (
     <div className="relative w-full h-screen">
+      {/* Reload Confirmation Popup */}
+      {showReloadPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 md:p-8 max-w-md w-full mx-auto shadow-2xl">
+            <div className="flex flex-col items-center text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+                Are you sure?
+              </h2>
+
+              <div className="flex gap-4 w-full">
+                <button
+                  onClick={handleStartPresentation}
+                  className="flex-1 py-3 px-4 bg-gray-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => router.push("/")}
+                  className="flex-1 py-3 px-4 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Container - TOP RIGHT CORNER */}
+      <div className="fixed top-4 right-4 w-[110px] h-[70px] md:w-[130px] md:h-[90px] lg:w-[150px] lg:h-[110px] bg-black rounded-lg overflow-hidden shadow-lg z-40">
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted={showReloadPopup}
+          className="w-full h-full object-cover"
+        >
+          <source src="/videos/S9.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
       {/* Background */}
       <div className="absolute inset-0">
         <div
@@ -171,7 +280,6 @@ export default function Slide9Page() {
           }}
         />
       </div>
-
 
       {/* Form Container */}
       <div className="relative z-10 pt-8 h-full flex items-center justify-center px-4">
