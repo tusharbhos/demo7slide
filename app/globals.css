@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom animations */
+@keyframes fly {
+  0% {
+    left: -50px;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    left: 100%;
+    transform: scale(1) rotate(0deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes zoomIn {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+/* Utility classes */
+.animate-fly {
+  animation: fly 15s linear infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animate-zoomIn {
+  animation: zoomIn 0.3s ease;
+}
+
+.maroon-gradient {
+  background: linear-gradient(to right, #ff7a18, #ffb347, #ff5f00);
+
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+/* Scrollbar hiding */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fullscreen video fixes */
+video:-webkit-full-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+video:fullscreen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure iframes are properly sized */
+iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Fix for popup z-index */
+.popup-overlay {
+  z-index: 100 !important;
 }
