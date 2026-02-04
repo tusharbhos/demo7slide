@@ -366,7 +366,7 @@ export default function Slide3Page() {
           <button
             onClick={() =>
               setInfoPopup({
-                image: "assets/accounts/1/coveAi/popup/S1B4P1_50pct.webp",
+                image: "assets/accounts/1/coveAi/popup/S2B4P1_50pct.webp",
               })
             }
             className="w-full py-3 px-4 rounded-xl border-2 border-orange-500 bg-white text-orange-600 font-semibold text-sm shadow-md hover:bg-orange-500 hover:text-white transition active:scale-95"
@@ -376,7 +376,7 @@ export default function Slide3Page() {
           <button
             onClick={() =>
               setInfoPopup({
-                image: "assets/accounts/1/coveAi/popup/S1B5P1_50pct.webp",
+                image: "assets/accounts/1/coveAi/popup/S2B5P1_50pct.webp",
               })
             }
             className="w-full py-3 px-4 rounded-xl border-2 border-orange-500 bg-white text-orange-600 font-semibold text-sm shadow-md hover:bg-orange-500 hover:text-white transition active:scale-95"
@@ -386,7 +386,7 @@ export default function Slide3Page() {
           <button
             onClick={() =>
               setInfoPopup({
-                image: "assets/accounts/1/coveAi/popup/S1B6P1_50pct.webp",
+                image: "assets/accounts/1/coveAi/popup/S2B6P1_50pct.webp",
               })
             }
             className="w-full py-3 px-4 rounded-xl border-2 border-orange-500 bg-white text-orange-600 font-semibold text-sm shadow-md hover:bg-orange-500 hover:text-white transition active:scale-95"

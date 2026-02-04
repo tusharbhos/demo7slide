@@ -283,7 +283,7 @@ export default function Slide9Page() {
 
       {/* Form Container */}
       <div className="relative z-10 pt-8 h-full flex items-center justify-center px-4">
-        <div className="bg-white rounded-xl shadow-lg w-full max-w-4xl max-h-[75vh] overflow-y-auto p-6">
+        <div className="bg-white rounded-xl shadow-lg w-full max-w-4xl max-h-[55vh] overflow-y-auto p-6">
           {/* Step Indicator */}
           <div className="flex justify-center gap-3 mb-8">
             {[1, 2, 3, 4].map((step) => (

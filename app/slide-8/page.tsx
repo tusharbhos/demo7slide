@@ -384,7 +384,7 @@ export default function Slide4Page() {
             <button
               onClick={() =>
                 setInfoPopup({
-                  image: "assets/accounts/1/coveAi/popup/S7B1P1_50pct.webp",
+                  image: "assets/accounts/1/coveAi/popup/S7B1p1_50pct.webp",
                 })
               }
               className="w-full py-3 px-4 rounded-xl border-2 border-orange-500 bg-white text-orange-600 font-semibold text-sm shadow-md hover:bg-orange-500 hover:text-white transition active:scale-95 mt-8"
